@@ -1,0 +1,27 @@
+{
+  "name": "windowed-observable",
+  "version": "0.1.0",
+  "description": "Simple messaging api",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "yarn run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luistak/windowed-observable.git"
+  },
+  "author": "luis.takahashi",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/luistak/windowed-observable/issues"
+  },
+  "homepage": "https://github.com/luistak/windowed-observable#readme",
+  "devDependencies": {
+    "typescript": "^3.7.2"
+  }
+}
