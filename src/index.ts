@@ -1,1 +1,1 @@
-console.log('initial version')
+export { default as Observable } from './observable';
