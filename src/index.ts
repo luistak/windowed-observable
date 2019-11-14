@@ -1,1 +1,7 @@
-export { default as Observable } from './observable';
+export {
+  Observer,
+  ObserversArray,
+  EventsArray,
+  handlerOptions,
+  default as Observable,
+} from './observable';

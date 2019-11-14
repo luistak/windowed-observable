@@ -2,13 +2,13 @@ const EVENTS = '__events__';
 const SHARED = '__shared__';
 const OBSERVERS = '__observers__';
 
-type EventsArray = Array<any>;
+export type EventsArray = Array<any>;
 interface EventsArrayMap {
   [namespace: string]: EventsArray
 }
 
-type Observer = (data: any) => void;
-type ObserversArray = Array<Observer>;
+export type Observer = (data: any) => void;
+export type ObserversArray = Array<Observer>;
 interface ObserversArrayMap {
   [namespace: string]: ObserversArray
 }
@@ -21,7 +21,7 @@ declare global {
   }
 }
 
-interface handlerOptions {
+export interface handlerOptions {
   latest: boolean
 }
 
