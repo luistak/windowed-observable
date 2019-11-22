@@ -41,11 +41,11 @@ class Observable {
   }
 
   get events(): EventsArray {
-    return window[SHARED][EVENTS][this._namespace];
+    return window[SHARED][EVENTS][this._namespace] || [];
   }
 
   get observers(): ObserversArray {
-    return window[SHARED][OBSERVERS][this._namespace];
+    return window[SHARED][OBSERVERS][this._namespace] || [];
   }
 
   set events(events: EventsArray) {
