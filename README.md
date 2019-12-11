@@ -25,7 +25,7 @@ import { Observable } from 'windowed-observable';
 const observable = new Observable('konoha');
 
 observable.subscribe((ninja) => {
-  console.log({ ninja })
+  console.log(ninja)
 })
 
 observable.dispatch('Uchiha Shisui');
@@ -39,7 +39,7 @@ const observable = new Observable('konoha');
 
 observable.dispatch('Senju Tobirama');
 
-observable.subscribe((ninja) => console.log({ ninja }), { latest: true });
+observable.subscribe((ninja) => console.log(ninja), { latest: true });
 // > Senju Tobirama
 ```
 
@@ -49,7 +49,7 @@ import { Observable } from 'windowed-observable';
 
 const observable = new Observable('konoha');
 
-const observer = (ninja) => console.log({ ninja });
+const observer = (ninja) => console.log(ninja);
 
 observable.subscribe(observer)
 observable.dispatch('Uzumaki Naruto');
@@ -107,5 +107,7 @@ const observable = new Observable('konoha');
 
 const handleClick = ninja = () => observable.dispatch(ninja);
 
-const AddNinjaButton = (ninja) => <button onClick={handleClick(ninja)}> Add ninja </button>;
+const AddNinjaButton = ({ ninja }) => (
+  <button onClick={handleClick(ninja)}> Add ninja </button>
+);
 ```
