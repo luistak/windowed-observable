@@ -1,6 +1,6 @@
-const EVENTS = '__events__';
-const SHARED = '__shared__';
-const OBSERVERS = '__observers__';
+export const EVENTS = '__events__';
+export const SHARED = '__shared__';
+export const OBSERVERS = '__observers__';
 
 export type EventsArray = Array<any>;
 interface EventsArrayMap {
@@ -21,8 +21,9 @@ declare global {
   }
 }
 
-export interface handlerOptions {
-  latest: boolean
+export interface SubscriptionOptions {
+  every?: boolean,
+  latest?: boolean,
 }
 
 class Observable {
@@ -40,19 +41,19 @@ class Observable {
     this.namespace = namespace;
   }
 
-  get events(): EventsArray {
-    return window[SHARED][EVENTS][this._namespace] || [];
+  private get events(): EventsArray {
+    return window[SHARED][EVENTS][this._namespace];
   }
 
-  get observers(): ObserversArray {
-    return window[SHARED][OBSERVERS][this._namespace] || [];
+  private get observers(): ObserversArray {
+    return window[SHARED][OBSERVERS][this._namespace];
   }
 
-  set events(events: EventsArray) {
+  private set events(events: EventsArray) {
     window[SHARED][EVENTS][this._namespace] = events;
   }
 
-  set observers(listeners: ObserversArray) {
+  private set observers(listeners: ObserversArray) {
     window[SHARED][OBSERVERS][this._namespace] = listeners;
   }
 
@@ -63,7 +64,7 @@ class Observable {
     if (!this.observers) this.observers = [];
   }
 
-  dispatch(data: any): void{
+  dispatch(data: any): void {
     if (this.observers.length > 0) {
       this.observers.forEach((observer: Observer) => observer(data));
     } else {
@@ -71,14 +72,29 @@ class Observable {
     };
   }
 
-  subscribe(observer: Observer, options: handlerOptions = { latest: false }): void {
-    const { latest } = options;
+  publish(data: any): void {
+    if (this.observers.length > 0) {
+      this.observers.forEach((observer: Observer) => observer(data));
+    } else {
+      this.events = this.events.concat(data);
+    };
+  }
+
+  subscribe(observer: Observer, options: SubscriptionOptions = { latest: false, every: false }): void {
+    const { every, latest } = options;
 
     const events = this.events;
-    if (latest && events.length > 0) {
-      const lastEvent = events.pop();
+    const hasOptions = latest || every;
 
-      observer(lastEvent);
+    if (hasOptions && events.length > 0) {
+      if (latest) {
+        const lastEvent = events.pop();
+        observer(lastEvent);
+      }
+
+      if (every) {
+        observer(events);
+      }
 
       this.events = events;
     }

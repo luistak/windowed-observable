@@ -2,6 +2,6 @@ export {
   Observer,
   ObserversArray,
   EventsArray,
-  handlerOptions,
+  SubscriptionOptions,
   default as Observable,
 } from './observable';
