@@ -29,7 +29,7 @@ export interface SubscriptionOptions {
 class Observable {
   _namespace: string
 
-  static initialize() {
+  private static initialize() {
     if (!window[SHARED]) window[SHARED] = {};
     if (!window[SHARED][EVENTS]) window[SHARED][EVENTS] = {};
     if (!window[SHARED][OBSERVERS]) window[SHARED][OBSERVERS] = {};
