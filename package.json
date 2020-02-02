@@ -1,6 +1,6 @@
 {
   "name": "windowed-observable",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Simple messaging api",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -10,8 +10,9 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint --ignore-path .gitignore '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "prebuild": "rm -Rf dist/",
     "build": "tsc",
-    "prepare": "yarn run build"
+    "prepare": "yarn build"
   },
   "repository": {
     "type": "git",
