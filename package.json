@@ -10,7 +10,6 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint --ignore-path .gitignore '*/**/*.{js,ts,tsx}' --quiet --fix",
-    "prebuild": "yarn test && yarn lint",
     "build": "tsc",
     "prepare": "yarn run build"
   },
