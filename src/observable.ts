@@ -69,7 +69,7 @@ class Observable {
       this.observers.forEach((observer: Observer) => observer(data));
     } else {
       this.events = this.events.concat(data);
-    };
+    }
   }
 
   publish(data: any): void {
@@ -77,7 +77,7 @@ class Observable {
       this.observers.forEach((observer: Observer) => observer(data));
     } else {
       this.events = this.events.concat(data);
-    };
+    }
   }
 
   subscribe(observer: Observer, options: SubscriptionOptions = { latest: false, every: false }): void {

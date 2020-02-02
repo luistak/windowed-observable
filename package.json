@@ -3,12 +3,14 @@
   "version": "0.3.0",
   "description": "Simple messaging api",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
   "files": [
     "/dist"
   ],
   "scripts": {
     "test": "jest",
+    "lint": "eslint --ignore-path .gitignore '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "prebuild": "yarn test && yarn lint",
     "build": "tsc",
     "prepare": "yarn run build"
   },
@@ -24,6 +26,9 @@
   "homepage": "https://github.com/luistak/windowed-observable#readme",
   "devDependencies": {
     "@types/jest": "^24.0.24",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
+    "eslint": "^6.8.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.2"
