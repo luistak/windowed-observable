@@ -7,7 +7,7 @@ name: CI + Publish
 
 on:
   release:
-    types: [created]
+    types: [pushed]
 
 jobs:
   build:
