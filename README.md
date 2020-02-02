@@ -28,7 +28,7 @@ observable.subscribe((ninja) => {
   console.log(ninja)
 })
 
-observable.dispatch('Uchiha Shisui');
+observable.publish('Uchiha Shisui');
 // > Uchiha Shisui
 ```
 ### Retrieving latest event
@@ -37,7 +37,7 @@ import { Observable } from 'windowed-observable';
 
 const observable = new Observable('konoha');
 
-observable.dispatch('Senju Tobirama');
+observable.publish('Senju Tobirama');
 
 observable.subscribe((ninja) => console.log(ninja), { latest: true });
 // > Senju Tobirama
@@ -52,7 +52,7 @@ const observable = new Observable('konoha');
 const observer = (ninja) => console.log(ninja);
 
 observable.subscribe(observer)
-observable.dispatch('Uzumaki Naruto');
+observable.publish('Uzumaki Naruto');
 // > Uzumaki Naruto
 
 // Unsubscribing
@@ -97,7 +97,7 @@ class NinjasList extends Component {
 }
 ```
 
-#### Dispatcher component
+#### Publisher component
 
 ```tsx
 import React from 'react';
@@ -105,7 +105,7 @@ import { Observable } from 'windowed-observable';
 
 const observable = new Observable('konoha');
 
-const handleClick = ninja = () => observable.dispatch(ninja);
+const handleClick = ninja = () => observable.publish(ninja);
 
 const AddNinjaButton = ({ ninja }) => (
   <button onClick={handleClick(ninja)}> Add ninja </button>
