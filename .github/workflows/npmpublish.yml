@@ -1,13 +1,8 @@
 name: CI + Publish
 
-# on:
-#   push:
-#     branches:
-#     - master
-
 on:
   release:
-    types: [pushed]
+    types: [created]
 
 jobs:
   build:
