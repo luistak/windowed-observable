@@ -2,7 +2,7 @@
 
 **Messaging lib using a Pub/Sub observable scoped by namespaces.**
 
-**windowed-observable** is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It expose a Observable that behaves like a scoped Pub/Sub topic using namespaces.
+**windowed-observable** is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It exposes an Observable that behaves like a scoped Pub/Sub topic using namespaces.
 
 ## Installation
 ```sh
