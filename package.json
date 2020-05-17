@@ -4,9 +4,7 @@
   "description": "Simple messaging api",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "files": [
-    "/dist"
-  ],
+  "files": ["/dist"],
   "scripts": {
     "test": "jest",
     "lint": "eslint --ignore-path .gitignore '*/**/*.{js,ts,tsx}' --quiet --fix",
@@ -20,7 +18,7 @@
     "url": "git+https://github.com/luistak/windowed-observable.git"
   },
   "author": "luis.takahashi",
-  "license": "Unlicense",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/luistak/windowed-observable/issues"
   },
