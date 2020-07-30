@@ -3,18 +3,15 @@ export const SHARED = '__shared__';
 export const OBSERVERS = '__observers__';
 
 export type EventsArray = Array<any>;
-interface EventsArrayMap {
-  [namespace: string]: EventsArray;
-}
-
 export type Observer = (data: any) => void;
 export type ObserversArray = Array<Observer>;
 
 declare global {
   interface Window {
-    [SHARED]: any;
-    [EVENTS]: EventsArrayMap;
-    [OBSERVERS]: Record<string, ObserversArray>;
+    [SHARED]: {
+      [EVENTS]: Record<string, EventsArray>;
+      [OBSERVERS]: Record<string, ObserversArray>;
+    };
   }
 }
 
