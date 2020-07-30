@@ -6,7 +6,7 @@
 
 ## Installation
 ```sh
-npm install windowed-observale
+npm install windowed-observable
 
 # or
 
@@ -15,7 +15,20 @@ yarn add windowed-observable
 
 ## Introduction
 The observable is just like a Pub/Sub topic, there are scoped events and observers(listeners) on each namespace, and those namespaces can be cleared, and changed.
-t
+
+## Usages
+
+### Common usage
+```ts
+import { Observable } from 'windowed-observable';
+const observable = new Observable('konoha');
+observable.subscribe((ninja) => {
+  console.log(ninja)
+})
+observable.publish('Uchiha Shisui');
+// > Uchiha Shisui
+```
+
 ### Retrieving latest event
 ```ts
 import { Observable } from 'windowed-observable';

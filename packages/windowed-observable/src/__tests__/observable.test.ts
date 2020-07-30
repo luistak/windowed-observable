@@ -1,11 +1,16 @@
-import Observable, { SHARED, EVENTS, OBSERVERS, SubscriptionOptions } from '../observable';
+import Observable, {
+  SHARED,
+  EVENTS,
+  OBSERVERS,
+  SubscriptionOptions,
+} from '../observable';
 
 let observable: any;
 const namespace: string = 'naruto';
 
 beforeEach(() => {
   observable = new Observable(namespace);
-})
+});
 
 afterEach(() => {
   observable.clear();
@@ -27,33 +32,38 @@ describe('Observables Test', () => {
     });
 
     observable.publish(event);
-  })
+  });
 
   it('Should receive the latest event', () => {
     const event = 'Rasengan!';
     observable.publish(event);
     const subscriptionOptions: SubscriptionOptions = {
-      latest: true
-    }
+      latest: true,
+    };
 
     observable.subscribe((jutso: string) => {
       expect(jutso).toEqual(event);
     }, subscriptionOptions);
-  })
+  });
 
   it('Should receive every event', () => {
-    const events = ['Kage bunshin', 'Kage bunshin', 'Kage bunshin', 'Kage bunshin'];
+    const events = [
+      'Kage bunshin',
+      'Kage bunshin',
+      'Kage bunshin',
+      'Kage bunshin',
+    ];
 
     events.forEach((event: string) => {
       observable.publish(event);
-    })
+    });
 
     const subscriptionOptions: SubscriptionOptions = {
-      every: true
-    }
+      every: true,
+    };
 
     observable.subscribe((bunshins: string[]) => {
       expect(bunshins).toHaveLength(events.length);
     }, subscriptionOptions);
-  })
+  });
 });

@@ -15,6 +15,7 @@ jobs:
           node-version: 12
       - name: Validations
         run: yarn && yarn validate
+        working-directory: packages/windowed-observable
 
   publish-npm:
     needs: validate
@@ -26,5 +27,6 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: npm publish
+        working-directory: packages/windowed-observable
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
