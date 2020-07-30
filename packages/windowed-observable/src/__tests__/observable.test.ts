@@ -5,65 +5,77 @@ import Observable, {
   SubscriptionOptions,
 } from '../observable';
 
-let observable: any;
 const namespace: string = 'naruto';
+const observable = new Observable(namespace);
 
-beforeEach(() => {
-  observable = new Observable(namespace);
-});
+afterEach(() => observable.clear());
 
-afterEach(() => {
-  observable.clear();
-});
-
-describe('Observables Test', () => {
-  it('Should add the namespace on the window', () => {
+describe('Observable', () => {
+  it('should add the namespace on the window', () => {
     const emptyArray: Array<any> = [];
 
     expect(window[SHARED][EVENTS][namespace]).toEqual(emptyArray);
     expect(window[SHARED][OBSERVERS][namespace]).toEqual(emptyArray);
   });
 
-  it('Should receive an event', () => {
-    const event = 'Rasengan!';
+  it('should store published events without observers', () => {
+    observable.publish('something');
 
-    observable.subscribe((jutso: string) => {
-      expect(jutso).toEqual(event);
-    });
-
-    observable.publish(event);
+    expect(window[SHARED][EVENTS][namespace]).toHaveLength(1);
   });
 
-  it('Should receive the latest event', () => {
+  it('should receive an event', () => {
     const event = 'Rasengan!';
-    observable.publish(event);
-    const subscriptionOptions: SubscriptionOptions = {
-      latest: true,
-    };
 
-    observable.subscribe((jutso: string) => {
-      expect(jutso).toEqual(event);
-    }, subscriptionOptions);
+    const mockedObserver = jest.fn();
+    observable.subscribe(mockedObserver);
+
+    expect(window[SHARED][OBSERVERS][namespace]).toHaveLength(1);
+
+    observable.publish(event);
+    observable.dispatch(event);
+
+    expect(mockedObserver).toHaveBeenCalledWith(event);
+    expect(mockedObserver).toHaveBeenCalledTimes(2);
+    expect(window[SHARED][EVENTS][namespace]).toHaveLength(2);
   });
 
-  it('Should receive every event', () => {
-    const events = [
-      'Kage bunshin',
-      'Kage bunshin',
-      'Kage bunshin',
-      'Kage bunshin',
-    ];
-
-    events.forEach((event: string) => {
+  describe('Subscription options', () => {
+    it('should receive the latest event when subscribing after a published event', () => {
+      const event = 'Rasengan!';
       observable.publish(event);
+      const subscriptionOptions: SubscriptionOptions = {
+        latest: true,
+      };
+
+      const mockedObserver = jest.fn();
+      observable.subscribe(mockedObserver, subscriptionOptions);
+      observable.publish(event);
+
+      expect(mockedObserver).toHaveBeenCalledWith(event);
     });
 
-    const subscriptionOptions: SubscriptionOptions = {
-      every: true,
-    };
+    it('should receive every event when subscribing', () => {
+      const events = [
+        'Kage bunshin 1',
+        'Kage bunshin 2',
+        'Kage bunshin 3',
+        'Kage bunshin 4',
+      ];
 
-    observable.subscribe((bunshins: string[]) => {
-      expect(bunshins).toHaveLength(events.length);
-    }, subscriptionOptions);
+      events.forEach((event: string) => {
+        observable.publish(event);
+      });
+
+      const subscriptionOptions: SubscriptionOptions = {
+        every: true,
+      };
+
+      const mockedObserver = jest.fn();
+      observable.subscribe(mockedObserver, subscriptionOptions);
+
+      expect(mockedObserver).toHaveBeenCalled();
+      expect(mockedObserver).toHaveBeenCalledWith(events);
+    });
   });
 });
