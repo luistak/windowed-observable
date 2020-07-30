@@ -3,7 +3,7 @@ name: Windowed Observable CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
     env:
       working-directory: packages/windowed-observable
