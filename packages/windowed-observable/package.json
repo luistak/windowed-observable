@@ -16,7 +16,8 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test",
+    "test": "tsdx test --watch",
+    "test:ci": "tsdx test --ci --coverage --maxWorkers=2",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "validate": "npm-run-all --parallel lint test build"
