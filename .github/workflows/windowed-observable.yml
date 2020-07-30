@@ -31,8 +31,20 @@ jobs:
         env:
           CI: true
 
-      - name: Validations
-        run: yarn validate
+      - name: Lint
+        run: yarn lint
+        working-directory: ${{env.working-directory}}
+        env:
+          CI: true
+
+      - name: Test
+        run: yarn test --ci --coverage --maxWorkers=2
+        working-directory: ${{env.working-directory}}
+        env:
+          CI: true
+
+      - name: Build
+        run: yarn build
         working-directory: ${{env.working-directory}}
         env:
           CI: true
