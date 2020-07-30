@@ -9,15 +9,12 @@ interface EventsArrayMap {
 
 export type Observer = (data: any) => void;
 export type ObserversArray = Array<Observer>;
-interface ObserversArrayMap {
-  [namespace: string]: ObserversArray;
-}
 
 declare global {
   interface Window {
     [SHARED]: any;
     [EVENTS]: EventsArrayMap;
-    [OBSERVERS]: ObserversArrayMap;
+    [OBSERVERS]: Record<string, ObserversArray>;
   }
 }
 
