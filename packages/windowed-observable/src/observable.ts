@@ -80,18 +80,15 @@ class Observable {
 
     const events = this.events;
     const hasOptions = latest || every;
-
     if (hasOptions && events.length > 0) {
       if (latest) {
-        const lastEvent = events.pop();
+        const lastEvent = events[events.length - 1];
         observer(lastEvent);
       }
 
       if (every) {
         observer(events);
       }
-
-      this.events = events;
     }
 
     this.observers = this.observers.concat(observer);
