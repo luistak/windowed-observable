@@ -4,30 +4,30 @@ export const OBSERVERS = '__observers__';
 
 export type EventsArray = Array<any>;
 interface EventsArrayMap {
-  [namespace: string]: EventsArray
+  [namespace: string]: EventsArray;
 }
 
 export type Observer = (data: any) => void;
 export type ObserversArray = Array<Observer>;
 interface ObserversArrayMap {
-  [namespace: string]: ObserversArray
+  [namespace: string]: ObserversArray;
 }
 
 declare global {
   interface Window {
-    [SHARED]: any,
-    [EVENTS]: EventsArrayMap,
-    [OBSERVERS]: ObserversArrayMap
+    [SHARED]: any;
+    [EVENTS]: EventsArrayMap;
+    [OBSERVERS]: ObserversArrayMap;
   }
 }
 
 export interface SubscriptionOptions {
-  every?: boolean,
-  latest?: boolean,
+  every?: boolean;
+  latest?: boolean;
 }
 
 class Observable {
-  _namespace: string
+  _namespace!: string;
 
   private static initialize() {
     if (!window[SHARED]) window[SHARED] = {};
@@ -80,7 +80,10 @@ class Observable {
     }
   }
 
-  subscribe(observer: Observer, options: SubscriptionOptions = { latest: false, every: false }): void {
+  subscribe(
+    observer: Observer,
+    options: SubscriptionOptions = { latest: false, every: false }
+  ): void {
     const { every, latest } = options;
 
     const events = this.events;
@@ -113,4 +116,3 @@ class Observable {
 }
 
 export default Observable;
-

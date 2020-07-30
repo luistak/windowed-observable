@@ -1,27 +1,111 @@
-# TSDX Bootstrap
+# windowed-observable
 
-This project was bootstrapped with [TSDX](https://github.com/jaredpalmer/tsdx).
+**Messaging lib using a Pub/Sub observable scoped by namespaces.**
 
-## Local Development
+**windowed-observable** is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It exposes an Observable that behaves like a scoped Pub/Sub topic using namespaces.
 
-Below is a list of commands you will probably find useful.
+## Installation
+```sh
+npm install windowed-observable
 
-### `npm start` or `yarn start`
+# or
 
-Runs the project in development/watch mode. Your project will be rebuilt upon changes. TSDX has a special logger for you convenience. Error messages are pretty printed and formatted for compatibility VS Code's Problems tab.
+yarn add windowed-observable
+```
 
-<img src="https://user-images.githubusercontent.com/4060187/52168303-574d3a00-26f6-11e9-9f3b-71dbec9ebfcb.gif" width="600" />
+## Introduction
+The observable is just like a Pub/Sub topic, there are scoped events and observers(listeners) on each namespace, and those namespaces can be cleared, and changed.
 
-Your library will be rebuilt if you make edits.
+## Usages
 
-### `npm run build` or `yarn build`
+### Common usage
+```ts
+import { Observable } from 'windowed-observable';
+const observable = new Observable('konoha');
+observable.subscribe((ninja) => {
+  console.log(ninja)
+})
+observable.publish('Uchiha Shisui');
+// > Uchiha Shisui
+```
 
-Bundles the package to the `dist` folder.
-The package is optimized and bundled with Rollup into multiple formats (CommonJS, UMD, and ES Module).
+### Retrieving latest event
+```ts
+import { Observable } from 'windowed-observable';
 
-<img src="https://user-images.githubusercontent.com/4060187/52168322-a98e5b00-26f6-11e9-8cf6-222d716b75ef.gif" width="600" />
+const observable = new Observable('konoha');
 
-### `npm test` or `yarn test`
+observable.publish('Senju Tobirama');
 
-Runs the test watcher (Jest) in an interactive mode.
-By default, runs tests related to files changed since the last commit.
+observable.subscribe((ninja) => console.log(ninja), { latest: true });
+// > Senju Tobirama
+```
+
+### Unsubscribing and clearing
+```ts
+import { Observable } from 'windowed-observable';
+
+const observable = new Observable('konoha');
+
+const observer = (ninja) => console.log(ninja);
+
+observable.subscribe(observer)
+observable.publish('Uzumaki Naruto');
+// > Uzumaki Naruto
+
+// Unsubscribing
+observable.unsubscribe(observer);
+
+// Clearing
+observable.clear();
+```
+
+### React App
+
+#### Observer component
+```tsx
+import React, { Component } from 'react';
+import { Observable } from 'windowed-observable';
+
+const observable = new Observable('konoha');
+
+class NinjasList extends Component {
+  state: {
+    ninjas: []
+  }
+
+  componentDidMount() {
+    this.observer = (ninja) => {
+      const ninjas = this.state.ninjas.concat(ninja);
+
+      this.setState({ ninjas });
+    }
+
+    observable.subscribe(this.observer);
+  }
+
+  componentWillUnmount() {
+    observable.unsubscribe(this.observer);
+  }
+
+  render() {
+    ...
+    // ninjas listing
+  }
+}
+```
+
+#### Publisher component
+
+```tsx
+import React from 'react';
+import { Observable } from 'windowed-observable';
+
+const observable = new Observable('konoha');
+
+const handleClick = ninja = () => observable.publish(ninja);
+
+const AddNinjaButton = ({ ninja }) => (
+  <button onClick={handleClick(ninja)}> Add ninja </button>
+);
+```
