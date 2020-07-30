@@ -1,6 +1,15 @@
-# windowed-observable
+<div align="center">
+  <h1>windowed-observable</h1>
+  <p>Messaging lib using a pub/sub observable scoped by namespaces.</p>
+</div>
+<hr />
 
-**Messaging lib using a Pub/Sub observable scoped by namespaces.**
+![Npm version](https://img.shields.io/npm/v/windowed-observable)
+![Build](https://img.shields.io/github/workflow/status/luistak/windowed-observable/CI/master)
+![Size](https://img.shields.io/bundlephobia/minzip/windowed-observable)
+![License](https://img.shields.io/github/license/luistak/windowed-observable)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style)](http://makeapullrequest.com)
+![Downloads](https://img.shields.io/npm/dt/windowed-observable)
 
 **windowed-observable** is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It exposes an Observable that behaves like a scoped Pub/Sub topic using namespaces.
 
@@ -14,7 +23,9 @@ yarn add windowed-observable
 ```
 
 ## Introduction
-The observable is just like a Pub/Sub topic, there are scoped events and observers(listeners) on each namespace, and those namespaces can be cleared, and changed.
+
+An *observable* look like a pub/sub topic, there are scoped events and observers(listeners) on each namespace, and those namespaces can be cleared, and changed.
+
 
 ## Usages
 
@@ -60,7 +71,9 @@ observable.unsubscribe(observer);
 observable.clear();
 ```
 
-### React App
+### React
+
+Simple react usage
 
 #### Observer component
 ```tsx
@@ -109,3 +122,4 @@ const AddNinjaButton = ({ ninja }) => (
   <button onClick={handleClick(ninja)}> Add ninja </button>
 );
 ```
+
