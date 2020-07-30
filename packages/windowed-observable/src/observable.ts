@@ -24,7 +24,13 @@ class Observable {
   _namespace!: string;
 
   private static initialize() {
-    if (!window[SHARED]) window[SHARED] = {};
+    if (!window[SHARED]) {
+      window[SHARED] = {
+        [EVENTS]: {},
+        [OBSERVERS]: {},
+      };
+    }
+
     if (!window[SHARED][EVENTS]) window[SHARED][EVENTS] = {};
     if (!window[SHARED][OBSERVERS]) window[SHARED][OBSERVERS] = {};
   }
@@ -58,21 +64,13 @@ class Observable {
     if (!this.observers) this.observers = [];
   }
 
-  dispatch(data: any): void {
-    if (this.observers.length > 0) {
-      this.observers.forEach((observer: Observer) => observer(data));
-    } else {
-      this.events = this.events.concat(data);
-    }
+  publish(data: any): void {
+    this.observers?.forEach((observer: Observer) => observer(data));
+
+    this.events.push(data);
   }
 
-  publish(data: any): void {
-    if (this.observers.length > 0) {
-      this.observers.forEach((observer: Observer) => observer(data));
-    } else {
-      this.events = this.events.concat(data);
-    }
-  }
+  dispatch = this.publish;
 
   subscribe(
     observer: Observer,
