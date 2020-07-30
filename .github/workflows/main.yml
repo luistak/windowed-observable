@@ -1,8 +1,12 @@
-name: CI
-on: [push]
+name: Windowed Observable CI
+
+on: [push, pull_request]
+
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
+    env:
+      working-directory: packages/windowed-observable
 
     steps:
       - name: Begin CI...
@@ -23,20 +27,24 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+        working-directory: ${{env.working-directory}}
         env:
           CI: true
 
       - name: Lint
         run: yarn lint
+        working-directory: ${{env.working-directory}}
         env:
           CI: true
 
       - name: Test
-        run: yarn test --ci --coverage --maxWorkers=2
+        run: yarn test:ci
+        working-directory: ${{env.working-directory}}
         env:
           CI: true
 
       - name: Build
         run: yarn build
+        working-directory: ${{env.working-directory}}
         env:
           CI: true
