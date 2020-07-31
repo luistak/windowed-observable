@@ -1,5 +1,13 @@
 <div align="center">
   <h1>windowed-observable</h1>
+
+  <img
+    width="200"
+    height="auto"
+    alt="Windowed observable"
+    src="https://res.cloudinary.com/daiqkausy/image/upload/v1596144724/windowed-observable.png"
+  />
+
   <p>Messaging lib using a pub/sub observable scoped by namespaces.</p>
 </div>
 <hr />
