@@ -14,7 +14,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsdx watch",
+    "start": "tsdx watch --transpileOnly --noClean",
     "build": "tsdx build",
     "test": "tsdx test",
     "test:watch": "yarn test --watch",

@@ -1,6 +1,13 @@
-import * as React from 'react';
+// const bla = new Observable('kleitu');
 
-// Delete me
-export const Thing = () => {
-  return <div>the snozzberries taste like snozzberries</div>;
-};
+// export const Thing = () => {
+//   console.log({ bla });
+//   return (
+//     <div>
+//       <h1> OI Mainha</h1>
+//       <div>the snozzberries taste like snozzbesssssrries</div>
+//     </div>
+//   );
+// };
+
+export { ObservableProvider, useObservable } from './context';
