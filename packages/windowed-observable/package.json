@@ -14,7 +14,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsdx watch",
+    "start": "tsdx watch --noClean",
     "build": "tsdx build",
     "test": "tsdx test",
     "test:watch": "yarn test --watch",
@@ -31,7 +31,6 @@
     "url": "https://github.com/luistak/windowed-observable/issues"
   },
   "homepage": "https://github.com/luistak/windowed-observable#readme",
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
