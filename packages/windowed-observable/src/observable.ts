@@ -20,7 +20,7 @@ export interface SubscriptionOptions {
   latest?: boolean;
 }
 
-class Observable<T = any> {
+export class Observable<T = any> {
   _namespace!: string;
 
   private static initialize() {
@@ -108,5 +108,3 @@ class Observable<T = any> {
     this.observers = [];
   }
 }
-
-export default Observable;
