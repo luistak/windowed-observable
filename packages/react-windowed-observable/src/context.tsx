@@ -1,18 +1,29 @@
-import React, { useContext, useEffect, useState, createContext } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  createContext,
+  useCallback,
+} from 'react';
+
 import { Observable, Observer, SubscriptionOptions } from 'windowed-observable';
 
 export type DataType<T> = T | T[] | undefined;
 
-export type ObservableContextValue<T = any> = DataType<T> | undefined;
+export interface ObservableContextValue<T = any> {
+  data: DataType<T>;
+  publish: (data: T) => void;
+}
 
-export interface ObservableProviderProps {
+export interface ObservableProviderProps<T = any> {
+  onChange?: (data: DataType<T>) => void;
   children: React.ReactNode;
 }
 
 export interface ReactObservable<T = any> {
   observable: Observable;
   useObservable: () => ObservableContextValue<T>;
-  ObservableProvider: React.FC<ObservableProviderProps>;
+  ObservableProvider: React.FC<ObservableProviderProps<T>>;
 }
 
 export interface ObservableContextOptions<T = any> extends SubscriptionOptions {
@@ -24,39 +35,51 @@ export function createReactObservable<T = any>(
   options?: ObservableContextOptions<T>
 ): ReactObservable<T> {
   const observable = new Observable<T>(namespace);
+  function publish(data: T) {
+    observable.publish(data);
+  }
 
-  const ObservableContext = createContext<ObservableContextValue<T>>(
-    options?.initialData
-  );
+  const ObservableContext = createContext<ObservableContextValue<T>>({
+    publish,
+    data: options?.initialData,
+  });
 
-  function ObservableProvider({ children }: ObservableProviderProps) {
+  function ObservableProvider({
+    children,
+    onChange,
+  }: ObservableProviderProps<T>) {
     const [data, setData] = useState<DataType<T>>(options?.initialData);
 
-    useEffect(() => {
-      const observer: Observer<T> = (newData: DataType<T>) => {
-        setData(newData);
-      };
+    const observer: Observer<T> = (newData: DataType<T>) => {
+      setData(newData);
+      if (onChange) {
+        onChange(newData);
+      }
+    };
 
-      observable.subscribe(observer, options);
+    const memoizedObserver = useCallback(observer, [onChange]);
+
+    useEffect(() => {
+      observable.subscribe(memoizedObserver, options);
 
       return () => {
-        observable.unsubscribe(observer);
+        observable.unsubscribe(memoizedObserver);
       };
     }, []);
 
     return (
-      <ObservableContext.Provider value={data}>
+      <ObservableContext.Provider value={{ data, publish }}>
         {children}
       </ObservableContext.Provider>
     );
   }
 
   function useObservable() {
-    const context = useContext(ObservableContext);
-
     if (!ObservableContext) {
       throw new Error('useObservable must be used within a ObservableProvider');
     }
+
+    const context = useContext(ObservableContext);
 
     return context;
   }
