@@ -1,8 +1,11 @@
 {
+  "name": "react-windowed-observable",
   "version": "0.1.0",
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "dist/react-windowed-observable.esm.js",
   "typings": "dist/index.d.ts",
+  "author": "Luis Takahashi",
   "files": [
     "dist",
     "src"
@@ -31,9 +34,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-windowed-observable",
-  "author": "Luis Takahashi",
-  "module": "dist/react-windowed-observable.esm.js",
   "devDependencies": {
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",

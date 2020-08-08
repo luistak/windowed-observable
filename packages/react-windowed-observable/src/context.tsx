@@ -1,63 +1,69 @@
 import React, { useContext, useEffect, useState, createContext } from 'react';
 import { Observable, Observer, SubscriptionOptions } from 'windowed-observable';
 
-interface ObservableContextValue {
-  data: any;
-  observable?: Observable;
-}
-const ObservableContext = createContext<ObservableContextValue | undefined>(
-  undefined
-);
+export type DataType<T> = T | T[] | undefined;
 
-interface MerchantContextProvider {
-  namespace: string;
-  subscriptionOptions?: SubscriptionOptions;
+export type ObservableContextValue<T = any> = DataType<T> | undefined;
+
+export interface ObservableProviderProps {
   children: React.ReactNode;
 }
 
-declare global {
-  interface Window {
-    bla: Observable;
-  }
+export interface ReactObservable<T = any> {
+  observable: Observable;
+  useObservable: () => ObservableContextValue<T>;
+  ObservableProvider: React.FC<ObservableProviderProps>;
 }
 
-export function ObservableProvider<T = any>({
-  namespace,
-  subscriptionOptions,
-  children,
-}: MerchantContextProvider) {
-  const [data, setData] = useState<T | T[] | undefined>();
+export interface ObservableContextOptions<T = any> extends SubscriptionOptions {
+  initialData?: DataType<T>;
+}
 
-  useEffect(() => {
-    const observable = new Observable<T>(namespace);
+export function createReactObservable<T = any>(
+  namespace: string,
+  options?: ObservableContextOptions<T>
+): ReactObservable<T> {
+  const observable = new Observable<T>(namespace);
 
-    const observer: Observer<T> = (
-      newData: React.SetStateAction<T | T[] | undefined>
-    ) => {
-      setData(newData);
-    };
-
-    observable.subscribe(observer, subscriptionOptions);
-
-    window.bla = observable;
-
-    return () => {
-      observable.unsubscribe(observer);
-    };
-  }, []);
-
-  return (
-    <ObservableContext.Provider value={{ data }}>
-      {children}
-    </ObservableContext.Provider>
+  const ObservableContext = createContext<ObservableContextValue<T>>(
+    options?.initialData
   );
-}
 
-export function useObservable() {
-  const context = useContext(ObservableContext);
-  if (context === undefined) {
-    throw new Error('useObservable must be used within a ObservableProvider');
+  function ObservableProvider({ children }: ObservableProviderProps) {
+    const [data, setData] = useState<DataType<T>>(options?.initialData);
+
+    useEffect(() => {
+      const observer: Observer<T> = (newData: DataType<T>) => {
+        setData(newData);
+      };
+
+      observable.subscribe(observer, options);
+
+      return () => {
+        observable.unsubscribe(observer);
+      };
+    }, []);
+
+    return (
+      <ObservableContext.Provider value={data}>
+        {children}
+      </ObservableContext.Provider>
+    );
   }
 
-  return context;
+  function useObservable() {
+    const context = useContext(ObservableContext);
+
+    if (!ObservableContext) {
+      throw new Error('useObservable must be used within a ObservableProvider');
+    }
+
+    return context;
+  }
+
+  return {
+    observable,
+    useObservable,
+    ObservableProvider,
+  };
 }

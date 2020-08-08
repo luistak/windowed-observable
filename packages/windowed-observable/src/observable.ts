@@ -98,7 +98,7 @@ class Observable<T = any> {
   }
 
   unsubscribe(observer: Observer<T>) {
-    this.observers = this.observers.filter(obs => obs !== observer);
+    this.observers = this.observers.filter((obs) => obs !== observer);
   }
 
   clear() {

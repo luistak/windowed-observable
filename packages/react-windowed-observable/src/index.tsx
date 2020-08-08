@@ -10,4 +10,4 @@
 //   );
 // };
 
-export { ObservableProvider, useObservable } from './context';
+export * from './context';

@@ -16,6 +16,7 @@
   },
   "scripts": {
     "start": "lerna run start --parallel",
-    "prepare": "lerna run prepare --stream"
+    "prepare": "lerna run prepare --stream",
+    "release": "lerna publish --yes"
   }
 }
