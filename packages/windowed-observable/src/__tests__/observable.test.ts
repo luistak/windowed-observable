@@ -1,8 +1,9 @@
-import Observable, {
+import {
   SHARED,
   EVENTS,
   OBSERVERS,
   SubscriptionOptions,
+  Observable,
 } from '../observable';
 
 const namespace: string = 'naruto';
