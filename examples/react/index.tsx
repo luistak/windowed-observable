@@ -8,7 +8,7 @@ const { ObservableProvider, useObservable } = createReactObservable("blabla", {
 });
 
 const ChildComponent = () => {
-  const data = useObservable();
+  const { data } = useObservable();
 
   return (
     <div>
