@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "lerna run start --parallel",
-    "test": "lerna run test --parallel --stream",
+    "test:ci": "lerna run test:ci --parallel --stream",
     "lint": "lerna run lint --parallel --stream",
     "build": "lerna run build --stream",
     "prepare": "lerna run prepare --stream"
