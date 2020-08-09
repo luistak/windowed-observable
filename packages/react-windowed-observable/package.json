@@ -25,6 +25,7 @@
     "start": "tsdx watch --transpileOnly --noClean",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
+    "test:ci": "yarn test --ci --coverage --maxWorkers=2",
     "lint": "tsdx lint",
     "prepare": "tsdx build"
   },
@@ -53,6 +54,6 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "windowed-observable": "0.4.0"
+    "windowed-observable": "*"
   }
 }

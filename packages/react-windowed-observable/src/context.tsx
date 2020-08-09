@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 
-import { Observable, Observer, SubscriptionOptions } from 'windowed-observable';
+import { Observable, SubscriptionOptions } from 'windowed-observable';
 
 export type DataType<T> = T | T[] | undefined;
 
@@ -50,7 +50,7 @@ export function createReactObservable<T = any>(
   }: ObservableProviderProps<T>) {
     const [data, setData] = useState<DataType<T>>(options?.initialData);
 
-    const observer: Observer<T> = (newData: DataType<T>) => {
+    const observer = (newData: DataType<T>) => {
       setData(newData);
       if (onChange) {
         onChange(newData);
@@ -65,7 +65,7 @@ export function createReactObservable<T = any>(
       return () => {
         observable.unsubscribe(memoizedObserver);
       };
-    }, []);
+    }, [memoizedObserver]);
 
     return (
       <ObservableContext.Provider value={{ data, publish }}>

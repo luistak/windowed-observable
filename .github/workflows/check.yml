@@ -1,16 +1,15 @@
-name: CI
+name: Check
 
-on:
-  push:
-    branches:
-      - master
+on: [pull_request]
 
 jobs:
-  CI:
+  Check:
     runs-on: ubuntu-latest
+    env:
+      working-directory: packages/windowed-observable
 
     steps:
-      - name: Begin CI...
+      - name: Begin Check...
         uses: actions/checkout@v2
 
       - name: Use Node 12
@@ -45,3 +44,4 @@ jobs:
         run: yarn build
         env:
           CI: true
+
