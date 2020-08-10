@@ -39,10 +39,9 @@ export function createReactObservable<T = any>(
     observable.publish(data);
   }
 
-  const ObservableContext = createContext<ObservableContextValue<T>>({
-    publish,
-    data: options?.initialData,
-  });
+  const ObservableContext = createContext<
+    ObservableContextValue<T> | undefined
+  >(undefined);
 
   function ObservableProvider({
     children,
@@ -75,11 +74,12 @@ export function createReactObservable<T = any>(
   }
 
   function useObservable() {
-    if (!ObservableContext) {
-      throw new Error('useObservable must be used within a ObservableProvider');
-    }
-
     const context = useContext(ObservableContext);
+    if (context === undefined) {
+      throw new Error(
+        'useObservable must be used within an ObservableProvider'
+      );
+    }
 
     return context;
   }
