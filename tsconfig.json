@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "windowed-observable": ["./packages/windowed-observable/src"],
+      "react-windowed-observable": ["./packages/react-windowed-observable/src"]
+    }
+  }
+}
