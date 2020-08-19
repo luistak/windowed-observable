@@ -19,8 +19,8 @@
     "tsdx": "^0.13.2"
   },
   "scripts": {
-    "dev": "lerna run start --parallel --scope={windowed-observable,react-windowed-observable}",
-    "start": "lerna run start --parallel",
+    "dev": "lerna run dev --parallel --stream",
+    "start": "lerna run start --parallel --stream",
     "test:ci": "lerna run test:ci --parallel --stream",
     "lint": "lerna run lint --parallel --stream",
     "build": "lerna run build --stream",
