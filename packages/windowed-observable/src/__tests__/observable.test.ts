@@ -6,7 +6,7 @@ import {
   Observable,
 } from '../observable';
 
-const namespace: string = 'naruto';
+const namespace = 'naruto';
 const observable = new Observable(namespace);
 
 afterEach(() => observable.clear());

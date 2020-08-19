@@ -3,26 +3,65 @@
     "browser": true,
     "commonjs": true,
     "node": true,
-    "es6": true
+    "es6": true,
+    "es2020": true
   },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/eslint-recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest-dom/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:testing-library/recommended",
+    "plugin:testing-library/react",
+    "prettier"
   ],
   "globals": {
+    "window": "writable",
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
     "ecmaVersion": 2019,
     "sourceType": "module"
   },
   "plugins": [
+    "react",
+    "react-hooks",
+    "jest-dom",
+    "testing-library",
     "@typescript-eslint"
   ],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "warn"
-  }
+    "jest-dom/prefer-checked": "error",
+    "jest-dom/prefer-enabled-disabled": "error",
+    "jest-dom/prefer-required": "error",
+    "jest-dom/prefer-to-have-attribute": "error",
+    "testing-library/await-async-query": "error",
+    "testing-library/no-await-sync-query": "error",
+    "testing-library/no-debug": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-function-return-type": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "react/prop-types": "off"
+      },
+      "env": {
+        "node": true,
+        "commonjs": true,
+        "browser": true,
+        "jest": true
+      }
+    }
+  ]
 }

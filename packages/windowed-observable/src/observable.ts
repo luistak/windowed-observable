@@ -8,9 +8,9 @@ export type ObserversArray<T = any> = Array<Observer<T>>;
 
 declare global {
   interface Window {
-    [SHARED]: {
-      [EVENTS]: Record<string, EventsArray>;
-      [OBSERVERS]: Record<string, ObserversArray>;
+    __shared__: {
+      __events__: Record<string, EventsArray>;
+      __observers__: Record<string, ObserversArray>;
     };
   }
 }
@@ -48,16 +48,16 @@ export class Observable<T = any> {
     return window[SHARED][EVENTS][this._namespace];
   }
 
+  private set events(newEvents: EventsArray<T>) {
+    window[SHARED][EVENTS][this._namespace] = newEvents;
+  }
+
   private get observers(): ObserversArray<T> {
     return window[SHARED][OBSERVERS][this._namespace];
   }
 
-  private set events(events: EventsArray<T>) {
-    window[SHARED][EVENTS][this._namespace] = events;
-  }
-
-  private set observers(observers: ObserversArray<T>) {
-    window[SHARED][OBSERVERS][this._namespace] = observers;
+  private set observers(newObservers: ObserversArray<T>) {
+    window[SHARED][OBSERVERS][this._namespace] = newObservers;
   }
 
   set namespace(namespace: string) {
