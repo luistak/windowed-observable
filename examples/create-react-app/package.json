@@ -1,5 +1,5 @@
 {
-  "name": "create-react-app",
+  "name": "@windowed-observable/create-react-app-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

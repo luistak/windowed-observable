@@ -21,10 +21,8 @@ const ChildComponent = () => {
 const App = () => {
   return (
     <ObservableProvider>
-      <div>
-        <h1>Live reload </h1>
-        <ChildComponent />
-      </div>
+      <h1>Parcel example </h1>
+      <ChildComponent />
     </ObservableProvider>
   );
 };
