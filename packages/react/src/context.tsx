@@ -8,6 +8,9 @@ import React, {
 
 import { Observable, SubscriptionOptions } from 'windowed-observable';
 
+export const UseObservableError =
+  'useObservable must be used within an ObservableProvider';
+
 export type DataType<T> = T | T[] | undefined;
 
 export interface ObservableContextValue<T = any> {
@@ -17,7 +20,7 @@ export interface ObservableContextValue<T = any> {
 
 export interface ObservableProviderProps<T = any> {
   onChange?: (data: DataType<T>) => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export interface ReactObservable<T = any> {
@@ -76,9 +79,7 @@ export function createReactObservable<T = any>(
   function useObservable() {
     const context = useContext(ObservableContext);
     if (context === undefined) {
-      throw new Error(
-        'useObservable must be used within an ObservableProvider'
-      );
+      throw new Error(UseObservableError);
     }
 
     return context;

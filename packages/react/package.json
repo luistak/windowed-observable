@@ -53,6 +53,8 @@
     "@types/react-dom": "^16.9.8",
     "@types/testing-library__jest-dom": "^5.9.2",
     "husky": "^4.2.5",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "jest-mock-console": "^1.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "tsdx": "^0.13.2",
@@ -67,7 +69,9 @@
       "src/**/*.{ts,tsx}"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.ts"
-    ]
+      "<rootDir>/src/setupTests.ts",
+      "jest-mock-console/dist/setupTestFramework.js"
+    ],
+    "testEnvironment": "jest-environment-jsdom-sixteen"
   }
 }
