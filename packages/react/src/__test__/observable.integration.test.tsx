@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { ChangeEvent } from 'react';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
@@ -27,7 +27,7 @@ function renderObservable({ namespace = 'bla', observableOptions = {} } = {}) {
 
   function MockyPublisher() {
     const { publish } = useObservable();
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
       publish(e.target.value);
 
     return (
