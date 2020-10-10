@@ -4,6 +4,8 @@ import React, {
   useState,
   createContext,
   useCallback,
+  ReactNode,
+  FC,
 } from 'react';
 
 import { Observable, SubscriptionOptions } from 'windowed-observable';
@@ -20,13 +22,13 @@ export interface ObservableContextValue<T = any> {
 
 export interface ObservableProviderProps<T = any> {
   onChange?: (data: DataType<T>) => void;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export interface ReactObservable<T = any> {
   observable: Observable;
   useObservable: () => ObservableContextValue<T>;
-  ObservableProvider: React.FC<ObservableProviderProps<T>>;
+  ObservableProvider: FC<ObservableProviderProps<T>>;
 }
 
 export interface ObservableContextOptions<T = any> extends SubscriptionOptions {

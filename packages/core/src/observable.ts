@@ -97,12 +97,12 @@ export class Observable<T = any> {
     this.observers = this.observers.concat(observer);
   }
 
-  unsubscribe(observer: Observer<T>) {
+  unsubscribe(observer: Observer<T>): void {
     this.observers = this.observers.filter((obs) => obs !== observer);
   }
 
-  clear() {
-    this.observers.forEach((observer: Observer<T>) => observer(undefined));
+  clear(): void {
+    this.observers?.forEach((observer: Observer<T>) => observer(undefined));
 
     this.events = [];
     this.observers = [];
