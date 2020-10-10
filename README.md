@@ -8,7 +8,7 @@
     src="https://res.cloudinary.com/daiqkausy/image/upload/v1596144724/windowed-observable.png"
   />
 
-  <p>Messaging lib using a pub/sub observable scoped by namespaces.</p>
+  <p>The home for all windowed-observable projects</p>
 </div>
 <hr />
 
@@ -19,115 +19,25 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style)](http://makeapullrequest.com)
 ![Downloads](https://img.shields.io/npm/dt/windowed-observable)
 
-**windowed-observable** is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It exposes an Observable that behaves like a scoped Pub/Sub topic using namespaces.
-
-## Installation
-```sh
-npm install windowed-observable
-
-# or
-
-yarn add windowed-observable
-```
-
 ## Introduction
 
-An *observable* look like a pub/sub topic, there are scoped events and observers(listeners) on each namespace, and those namespaces can be cleared, and changed.
+### Problem
 
+In a micro frontends setup, one of the main problems is [cross application communication](https://dev.to/luistak/cross-micro-frontends-communication-30m3) and this library aims to solve it by providing a simple and framework agnostic API with zero configuration
 
-## Usages
+### Solution
 
-### Common usage
-```ts
-import { Observable } from 'windowed-observable';
-const observable = new Observable('konoha');
-observable.subscribe((ninja) => {
-  console.log(ninja)
-})
-observable.publish('Uchiha Shisui');
-// > Uchiha Shisui
-```
+Exposing an `observable` that behaves like scoped a pub/sub topic passing events per namespaces.
 
-### Retrieving latest event
-```ts
-import { Observable } from 'windowed-observable';
+This `Observable` is exported by the core package [`windowed-observable`](packages/core/REAMDE.md) with the following features:
 
-const observable = new Observable('konoha');
+### ✨ Features
+- 📦 Scoped events by `namespaces`
+- 🎣 Events history retrieval with `SubscriptionOptions`
+- 🛡 100% Written in TypeScript with static types
 
-observable.publish('Senju Tobirama');
+## Packages
 
-observable.subscribe((ninja) => console.log(ninja), { latest: true });
-// > Senju Tobirama
-```
+- [**windowed-observable**](packages/core/REAMDE.md) is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It exposes an Observable that behaves like a scoped pub/sub topic using namespaces.
 
-### Unsubscribing and clearing
-```ts
-import { Observable } from 'windowed-observable';
-
-const observable = new Observable('konoha');
-
-const observer = (ninja) => console.log(ninja);
-
-observable.subscribe(observer)
-observable.publish('Uzumaki Naruto');
-// > Uzumaki Naruto
-
-// Unsubscribing
-observable.unsubscribe(observer);
-
-// Clearing
-observable.clear();
-```
-
-### React
-
-Simple react usage
-
-#### Observer component
-```tsx
-import React, { Component } from 'react';
-import { Observable } from 'windowed-observable';
-
-const observable = new Observable('konoha');
-
-class NinjasList extends Component {
-  state: {
-    ninjas: []
-  }
-
-  componentDidMount() {
-    this.observer = (ninja) => {
-      const ninjas = this.state.ninjas.concat(ninja);
-
-      this.setState({ ninjas });
-    }
-
-    observable.subscribe(this.observer);
-  }
-
-  componentWillUnmount() {
-    observable.unsubscribe(this.observer);
-  }
-
-  render() {
-    ...
-    // ninjas listing
-  }
-}
-```
-
-#### Publisher component
-
-```tsx
-import React from 'react';
-import { Observable } from 'windowed-observable';
-
-const observable = new Observable('konoha');
-
-const handleClick = ninja = () => observable.publish(ninja);
-
-const AddNinjaButton = ({ ninja }) => (
-  <button onClick={handleClick(ninja)}> Add ninja </button>
-);
-```
-
+- [**react-windowed-observable**](packages/react/REAMDE.md) is a react abstraction over [`windowed-observable`](packages/core/REAMDE.md) exposing a helper that creates a scoped [`Context`](https://reactjs.org/docs/context.html) to handle events in a specific namespace

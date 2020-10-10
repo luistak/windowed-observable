@@ -22,7 +22,7 @@
 **react-windowed-observable** is a react library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window.
 
 
-## Installation
+## 📦 Installation
 ```sh
 npm install react-windowed-observable
 
@@ -31,13 +31,13 @@ npm install react-windowed-observable
 yarn add react-windowed-observable
 ```
 
-## Introduction
+## ⌨️ Introduction
 
 It exposes a hook to use and publish data using an Observable;
 
 An *observable* look like a pub/sub topic, there are scoped events and observers(listeners) on each namespace, and those namespaces can be cleared, and changed.
 
-## Examples
+## 🔨 Usages
 
 ### Basic example
 ```tsx
