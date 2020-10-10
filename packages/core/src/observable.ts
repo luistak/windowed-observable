@@ -68,7 +68,7 @@ export class Observable<T = any> {
   }
 
   publish(data: T): void {
-    this.observers?.forEach((observer: Observer<T>) => observer(data));
+    this.observers.forEach((observer: Observer<T>) => observer(data));
 
     this.events.push(data);
   }
@@ -102,7 +102,7 @@ export class Observable<T = any> {
   }
 
   clear() {
-    this.observers?.forEach((observer: Observer<T>) => observer(undefined));
+    this.observers.forEach((observer: Observer<T>) => observer(undefined));
 
     this.events = [];
     this.observers = [];
