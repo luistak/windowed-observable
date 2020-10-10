@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/luistak/windowed-observable/issues"
   },
-  "homepage": "https://github.com/luistak/windowed-observable/tree/master/packages/react-windowed-observable",
+  "homepage": "https://github.com/luistak/windowed-observable/tree/master/packages/react#readme",
   "files": [
     "dist",
     "src"

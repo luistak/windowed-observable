@@ -21,7 +21,7 @@
 
 **windowed-observable** is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It exposes an Observable that behaves like a scoped Pub/Sub topic using namespaces.
 
-## Installation
+## 📦 Installation
 ```sh
 npm install windowed-observable
 
@@ -30,12 +30,11 @@ npm install windowed-observable
 yarn add windowed-observable
 ```
 
-## Introduction
+## ⌨️ Introduction
 
 An *observable* look like a pub/sub topic, there are scoped events and observers(listeners) on each namespace, and those namespaces can be cleared, and changed.
 
-
-## Usages
+## 🔨 Usages
 
 ### Common usage
 ```ts
@@ -124,7 +123,7 @@ import { Observable } from 'windowed-observable';
 
 const observable = new Observable('konoha');
 
-const handleClick = ninja = () => observable.publish(ninja);
+const handleClick = ninja => () => observable.publish(ninja);
 
 const AddNinjaButton = ({ ninja }) => (
   <button onClick={handleClick(ninja)}> Add ninja </button>
