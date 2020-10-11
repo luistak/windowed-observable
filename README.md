@@ -29,7 +29,7 @@ In a micro frontends setup, one of the main problems is [cross application commu
 
 Exposing an `observable` that behaves like scoped a pub/sub topic passing events per namespaces.
 
-This `Observable` is exported by the core package [`windowed-observable`](packages/core/REAMDE.md) with the following features:
+This `Observable` is exported by the core package [`windowed-observable`](packages/core/README.md) with the following features:
 
 ### ✨ Features
 - 📦 Scoped events by `namespaces`
@@ -38,6 +38,6 @@ This `Observable` is exported by the core package [`windowed-observable`](packag
 
 ## Packages
 
-- [**windowed-observable**](packages/core/REAMDE.md) is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It exposes an Observable that behaves like a scoped pub/sub topic using namespaces.
+- [**windowed-observable**](packages/core/README.md) is a library for messaging using Observables, making it easier to communicate multiple apps or parts of an app using the window. It exposes an Observable that behaves like a scoped pub/sub topic using namespaces.
 
-- [**react-windowed-observable**](packages/react/REAMDE.md) is a react abstraction over [`windowed-observable`](packages/core/REAMDE.md) exposing a helper that creates a scoped [`Context`](https://reactjs.org/docs/context.html) to handle events in a specific namespace
+- [**react-windowed-observable**](packages/react/README.md) is a react abstraction over [`windowed-observable`](packages/core/README.md) exposing a helper that creates a scoped [`Context`](https://reactjs.org/docs/context.html) to handle events in a specific namespace
