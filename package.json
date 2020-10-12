@@ -17,7 +17,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "scheduler": "^0.19.1",
-    "tsdx": "^0.13.2"
+    "tsdx": "^0.14.0"
   },
   "scripts": {
     "dev": "lerna run dev --parallel --stream",
