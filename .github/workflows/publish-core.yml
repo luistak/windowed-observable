@@ -1,0 +1,32 @@
+name: Publish core package
+
+on:
+  push:
+    tags:
+      - windowed-observable@*
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Validations
+        run: yarn && yarn validate
+        working-directory: packages/core
+
+  publish-npm:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: yarn && npm publish
+        working-directory: packages/core
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}

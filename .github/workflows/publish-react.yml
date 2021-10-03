@@ -1,9 +1,9 @@
-name: CI + Publish
+name: Publish react package
 
 on:
   push:
     tags:
-      - v*
+      - react-windowed-observable@*
 
 jobs:
   validate:
@@ -15,7 +15,7 @@ jobs:
           node-version: 12
       - name: Validations
         run: yarn && yarn validate
-        working-directory: packages/windowed-observable
+        working-directory: packages/react
 
   publish-npm:
     needs: validate
@@ -27,6 +27,6 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: yarn && npm publish
-        working-directory: packages/windowed-observable
+        working-directory: packages/react
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
