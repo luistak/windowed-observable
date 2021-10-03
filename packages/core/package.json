@@ -11,18 +11,14 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "scripts": {
     "start": "tsdx watch",
     "dev": "yarn start --format cjs --noClean",
     "build": "tsdx build",
-    "test": "tsdx test",
-    "test:watch": "yarn test --watch",
-    "test:ci": "yarn test --ci --coverage --maxWorkers=2",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "validate": "npm-run-all --parallel lint test:ci build"
+    "prepare": "tsdx build"
   },
   "repository": {
     "type": "git",
@@ -49,10 +45,5 @@
     "tsdx": "^0.14.0",
     "tslib": "^2.0.0",
     "typescript": "^4.0.2"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ]
   }
 }
