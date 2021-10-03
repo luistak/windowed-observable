@@ -10,8 +10,9 @@ import React, {
 
 import { Observable, SubscriptionOptions } from 'windowed-observable';
 
-export const UseObservableError =
-  'useObservable must be used within an ObservableProvider';
+const ObservableProviderDisplayName = 'ObservableProvider';
+
+export const UseObservableError = `useObservable must be used within an ${ObservableProviderDisplayName}`;
 
 export type DataType<T> = T | T[] | undefined;
 
@@ -77,6 +78,8 @@ export function createReactObservable<T = any>(
       </ObservableContext.Provider>
     );
   }
+
+  ObservableProvider.displayName = ObservableProviderDisplayName;
 
   function useObservable() {
     const context = useContext(ObservableContext);
