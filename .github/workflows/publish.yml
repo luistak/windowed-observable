@@ -15,12 +15,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-
-      - name: Install Packages
-        run: yarn
-
       - name: Publish package
-        run: lerna publish --yes
+        run: yarn && npx lerna publish --yes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
