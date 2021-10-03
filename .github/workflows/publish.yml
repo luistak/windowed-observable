@@ -5,6 +5,11 @@ on:
     tags:
       - v*
 
+permissions:
+  contents: write # for checkout and tag
+  pull-requests: write # for comments
+  packages: write # for publish
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -17,15 +22,33 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
 
+      - name: Git Identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Checkout and pull branch
-        run: git checkout $GIT_BRANCH && git pull
+        run: git checkout "${GITHUB_REF:11}" && git pull
 
       - name: Install Packages
         run: yarn
+
+      - name: Authenticate with Registry
+        run: |
+          yarn logout
+          echo "registry=http://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.npm_token }}
 
       - name: Publish package
         run: npx lerna publish --yes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_PAT }}
+          NPM_TOKEN: ${{ secrets.npm_token }}
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
