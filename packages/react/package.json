@@ -25,9 +25,6 @@
     "start": "tsdx watch",
     "dev": "yarn start --format cjs --noClean",
     "build": "tsdx build",
-    "test": "tsdx test",
-    "test:watch": "yarn test --watch",
-    "test:ci": "yarn test --ci --coverage --maxWorkers=2",
     "lint": "tsdx lint",
     "prepare": "tsdx build"
   },
@@ -63,15 +60,5 @@
   },
   "dependencies": {
     "windowed-observable": "*"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.ts",
-      "jest-mock-console/dist/setupTestFramework.js"
-    ],
-    "testEnvironment": "jest-environment-jsdom-sixteen"
   }
 }

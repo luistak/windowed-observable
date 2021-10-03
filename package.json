@@ -3,28 +3,30 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "dev": "lerna run dev --parallel --stream",
+    "start": "lerna run start --parallel --stream",
+    "test": "jest -w=2",
+    "test:ci": "yarn test --ci --coverage --maxWorkers=2",
+    "test:watch": "yarn test --watch",
+    "lint": "lerna run lint --parallel --stream",
+    "build": "lerna run build --stream",
+    "prepare": "lerna run prepare --stream"
+  },
   "devDependencies": {
-    "@typescript-eslint/parser": "^4.3.0",
     "@typescript-eslint/eslint-plugin": "^4.1.0 ",
+    "@typescript-eslint/parser": "^4.3.0",
     "eslint": "^6.6.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-jest-dom": "^3.1.7",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react-hooks": "^4.1.0",
     "eslint-plugin-testing-library": "^3.6.0",
-    "lerna": "^3.22.1",
+    "lerna": "^4.0.0",
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^17.0.1",
     "scheduler": "^0.20.1",
     "tsdx": "^0.14.0"
-  },
-  "scripts": {
-    "dev": "lerna run dev --parallel --stream",
-    "start": "lerna run start --parallel --stream",
-    "test:ci": "lerna run test:ci --parallel --stream",
-    "lint": "lerna run lint --parallel --stream",
-    "build": "lerna run build --stream",
-    "prepare": "lerna run prepare --stream"
   }
 }
