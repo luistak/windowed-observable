@@ -1,6 +1,6 @@
 {
   "name": "react-windowed-observable",
-  "version": "0.2.1-0",
+  "version": "0.2.1",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/react-windowed-observable.esm.js",
@@ -59,6 +59,6 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
-    "windowed-observable": "*"
+    "windowed-observable": "^0.4.3"
   }
 }
