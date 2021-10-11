@@ -1,1 +1,2 @@
-export * from './context';
+export { createReactObservable } from './context';
+export * from './types';
