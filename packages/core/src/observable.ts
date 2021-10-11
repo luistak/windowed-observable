@@ -1,27 +1,11 @@
+import { Events, Observer, Observers } from './types';
+
 export const EVENTS = '__events__';
 export const SHARED = '__shared__';
 export const OBSERVERS = '__observers__';
 
-export type EventsArray<T = any> = Array<T>;
-export type Observer<T = any> = (data: T | Array<T> | undefined) => void;
-export type ObserversArray<T = any> = Array<Observer<T>>;
-
-declare global {
-  interface Window {
-    __shared__: {
-      __events__: Record<string, EventsArray>;
-      __observers__: Record<string, ObserversArray>;
-    };
-  }
-}
-
-export interface SubscriptionOptions {
-  every?: boolean;
-  latest?: boolean;
-}
-
 export class Observable<T = any> {
-  _namespace!: string;
+  private _namespace!: string;
 
   private static initialize() {
     if (!window[SHARED]) {
@@ -30,9 +14,11 @@ export class Observable<T = any> {
         [OBSERVERS]: {},
       };
     }
+
     if (!window[SHARED][EVENTS]) {
       window[SHARED][EVENTS] = {};
     }
+
     if (!window[SHARED][OBSERVERS]) {
       window[SHARED][OBSERVERS] = {};
     }
@@ -44,22 +30,6 @@ export class Observable<T = any> {
     this.namespace = namespace;
   }
 
-  private get events(): EventsArray<T> {
-    return window[SHARED][EVENTS][this._namespace];
-  }
-
-  private set events(newEvents: EventsArray<T>) {
-    window[SHARED][EVENTS][this._namespace] = newEvents;
-  }
-
-  private get observers(): ObserversArray<T> {
-    return window[SHARED][OBSERVERS][this._namespace];
-  }
-
-  private set observers(newObservers: ObserversArray<T>) {
-    window[SHARED][OBSERVERS][this._namespace] = newObservers;
-  }
-
   set namespace(namespace: string) {
     this._namespace = namespace;
 
@@ -67,33 +37,49 @@ export class Observable<T = any> {
     if (!this.observers) this.observers = [];
   }
 
+  private get events(): Events<T> {
+    return window[SHARED][EVENTS][this._namespace];
+  }
+
+  private set events(newEvents: Events<T>) {
+    window[SHARED][EVENTS][this._namespace] = newEvents;
+  }
+
+  private get observers(): Observers<T> {
+    return window[SHARED][OBSERVERS][this._namespace];
+  }
+
+  private set observers(newObservers: Observers<T>) {
+    window[SHARED][OBSERVERS][this._namespace] = newObservers;
+  }
+
+  getEvents(): Events<T> {
+    return this.events;
+  }
+
+  getLastEvent(): T | undefined {
+    const events = this.events;
+    if (!events.length) {
+      return;
+    }
+
+    const lastEvent = events[events.length - 1];
+
+    return lastEvent;
+  }
+
   publish(data: T): void {
-    this.observers.forEach((observer: Observer<T>) => observer(data));
+    const events = this.events;
+    const lastEvent = this.getLastEvent();
+
+    this.observers.forEach((observer) => observer(data, { events, lastEvent }));
 
     this.events.push(data);
   }
 
   dispatch = this.publish;
 
-  subscribe(
-    observer: Observer<T>,
-    options: SubscriptionOptions = { latest: false, every: false }
-  ): void {
-    const { every, latest } = options;
-
-    const events = this.events;
-    const hasOptions = latest || every;
-    if (hasOptions && events.length > 0) {
-      if (latest) {
-        const lastEvent = events[events.length - 1];
-        observer(lastEvent);
-      }
-
-      if (every) {
-        observer(events);
-      }
-    }
-
+  subscribe(observer: Observer<T>): void {
     this.observers = this.observers.concat(observer);
   }
 
@@ -102,7 +88,12 @@ export class Observable<T = any> {
   }
 
   clear(): void {
-    this.observers?.forEach((observer: Observer<T>) => observer(undefined));
+    const events = this.events;
+    const lastEvent = this.getLastEvent();
+
+    this.observers.forEach((observer) =>
+      observer(undefined, { events, lastEvent })
+    );
 
     this.events = [];
     this.observers = [];
