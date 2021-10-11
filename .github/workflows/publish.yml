@@ -31,7 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout and pull branch
-        run: git checkout "${GITHUB_REF:11}" && git pull
+        run: git fetch && git checkout $GIT_BRANCH && git pull
 
       - name: Install Packages
         run: yarn
