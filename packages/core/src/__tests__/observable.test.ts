@@ -1,5 +1,6 @@
 import f from 'faker';
-import { SHARED, EVENTS, OBSERVERS, Observable } from '../observable';
+import { SHARED, EVENTS, OBSERVERS } from '../observable';
+import { Observable } from '../index';
 
 function mockObservable() {
   const observer = jest.fn();
@@ -63,6 +64,27 @@ describe('Observable', () => {
     observable.publish(event);
 
     expect(observer).not.toHaveBeenCalled();
+    expect(observable.getEvents()).toStrictEqual([event]);
+    expect(observable.getLastEvent()).toStrictEqual(event);
+  });
+
+  it('should clear every observer accordingly', () => {
+    const { observable, observer } = mockObservable();
+
+    observable.subscribe(observer);
+
+    const event = f.datatype.uuid();
+
+    observable.clear();
+
+    observable.publish(event);
+
+    expect(observer).toHaveBeenCalledWith(undefined, {
+      events: [],
+      lastEvent: undefined,
+    });
+    expect(observable.getEvents()).toStrictEqual([event]);
+    expect(observable.getLastEvent()).toStrictEqual(event);
   });
 
   it('should get every event and the last event accordingly', () => {

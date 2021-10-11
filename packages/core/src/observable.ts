@@ -7,6 +7,7 @@ export const OBSERVERS = '__observers__';
 export class Observable<T = any> {
   private _namespace!: string;
 
+  // istanbul ignore next
   private static initialize() {
     if (!window[SHARED]) {
       window[SHARED] = {
@@ -33,7 +34,10 @@ export class Observable<T = any> {
   set namespace(namespace: string) {
     this._namespace = namespace;
 
+    // istanbul ignore next
     if (!this.events) this.events = [];
+
+    // istanbul ignore next
     if (!this.observers) this.observers = [];
   }
 
