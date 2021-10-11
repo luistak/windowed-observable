@@ -3,91 +3,94 @@ import React, {
   useEffect,
   useState,
   createContext,
-  useCallback,
-  ReactNode,
   FC,
+  useMemo,
 } from 'react';
+import {
+  CreateReactObservableOptions,
+  ObservableContextValue,
+  ObservableData,
+  ObservableProviderProps,
+  ReactObservable,
+  UseObservableReturn,
+} from './types';
 
-import { Observable, SubscriptionOptions } from 'windowed-observable';
+import { Observable, Observer } from 'windowed-observable';
 
 const ObservableProviderDisplayName = 'ObservableProvider';
 
 export const UseObservableError = `useObservable must be used within an ${ObservableProviderDisplayName}`;
 
-export type DataType<T> = T | T[] | undefined;
-
-export interface ObservableContextValue<T = any> {
-  data: DataType<T>;
-  publish: (data: T) => void;
-}
-
-export interface ObservableProviderProps<T = any> {
-  onChange?: (data: DataType<T>) => void;
-  children?: ReactNode;
-}
-
-export interface ReactObservable<T = any> {
-  observable: Observable;
-  useObservable: () => ObservableContextValue<T>;
-  ObservableProvider: FC<ObservableProviderProps<T>>;
-}
-
-export interface ObservableContextOptions<T = any> extends SubscriptionOptions {
-  initialData?: DataType<T>;
-}
-
 export function createReactObservable<T = any>(
   namespace: string,
-  options?: ObservableContextOptions<T>
+  options?: CreateReactObservableOptions<T>
 ): ReactObservable<T> {
   const observable = new Observable<T>(namespace);
-  function publish(data: T) {
-    observable.publish(data);
-  }
 
   const ObservableContext = createContext<
     ObservableContextValue<T> | undefined
   >(undefined);
 
-  function ObservableProvider({
+  const ObservableProvider: FC<ObservableProviderProps<T>> = ({
     children,
     onChange,
-  }: ObservableProviderProps<T>) {
-    const [data, setData] = useState<DataType<T>>(options?.initialData);
-
-    const observer = (newData: DataType<T>) => {
-      setData(newData);
-      if (onChange) {
-        onChange(newData);
-      }
-    };
-
-    const memoizedObserver = useCallback(observer, [onChange]);
+  }) => {
+    const [data, setData] = useState<ObservableData<T>>({
+      data: options?.initialData,
+      events: [],
+      lastEvent: undefined,
+    });
 
     useEffect(() => {
-      observable.subscribe(memoizedObserver, options);
+      const observer: Observer<T> = (newData, { events, lastEvent }) => {
+        setData({ data: newData, events, lastEvent });
+      };
+
+      observable.subscribe(observer);
 
       return () => {
-        observable.unsubscribe(memoizedObserver);
+        observable.unsubscribe(observer);
       };
-    }, [memoizedObserver]);
+    }, []);
+
+    useEffect(() => {
+      if (!onChange) {
+        return;
+      }
+
+      observable.subscribe(onChange);
+
+      return () => {
+        observable.unsubscribe(onChange);
+      };
+    }, [onChange]);
+
+    const value = useMemo(
+      () => ({
+        ...data,
+        publish: observable.publish,
+      }),
+      [data]
+    );
 
     return (
-      <ObservableContext.Provider value={{ data, publish }}>
+      <ObservableContext.Provider value={value}>
         {children}
       </ObservableContext.Provider>
     );
-  }
+  };
 
   ObservableProvider.displayName = ObservableProviderDisplayName;
 
-  function useObservable() {
-    const context = useContext(ObservableContext);
-    if (context === undefined) {
+  function useObservable(): UseObservableReturn<T> {
+    const ctx = useContext(ObservableContext);
+    if (ctx === undefined) {
       throw new Error(UseObservableError);
     }
 
-    return context;
+    const { publish, ...context } = ctx;
+
+    return [context, publish];
   }
 
   return {
