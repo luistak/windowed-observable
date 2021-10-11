@@ -35,6 +35,7 @@ export function createReactObservable<T = any>(
     children,
     onChange,
   }) => {
+    // istanbul ignore next
     const [data, setData] = useState<ObservableData<T>>({
       data: options?.initialData,
       events: [],
