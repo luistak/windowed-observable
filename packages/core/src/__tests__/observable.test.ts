@@ -1,82 +1,84 @@
-import {
-  SHARED,
-  EVENTS,
-  OBSERVERS,
-  SubscriptionOptions,
-  Observable,
-} from '../observable';
+import f from 'faker';
+import { SHARED, EVENTS, OBSERVERS, Observable } from '../observable';
 
-const namespace = 'naruto';
-const observable = new Observable(namespace);
+function mockObservable() {
+  const observer = jest.fn();
+  const namespace = f.datatype.uuid();
+  const observable = new Observable(namespace);
 
-afterEach(() => observable.clear());
+  return { observer, namespace, observable };
+}
 
 describe('Observable', () => {
   it('should add the namespace on the window', () => {
-    const emptyArray: Array<any> = [];
+    const { namespace } = mockObservable();
+    const emptyArray: any[] = [];
 
     expect(window[SHARED][EVENTS][namespace]).toEqual(emptyArray);
     expect(window[SHARED][OBSERVERS][namespace]).toEqual(emptyArray);
   });
 
   it('should store published events without observers', () => {
+    const { namespace, observable } = mockObservable();
     observable.publish('something');
 
     expect(window[SHARED][EVENTS][namespace]).toHaveLength(1);
   });
 
-  it('should receive an event', () => {
-    const event = 'Rasengan!';
+  it('should receive an event accordingly', () => {
+    const { observer, namespace, observable } = mockObservable();
 
-    const mockedObserver = jest.fn();
-    observable.subscribe(mockedObserver);
+    observable.subscribe(observer);
 
     expect(window[SHARED][OBSERVERS][namespace]).toHaveLength(1);
 
-    observable.publish(event);
-    observable.dispatch(event);
+    const firstEvent = f.datatype.uuid();
 
-    expect(mockedObserver).toHaveBeenCalledWith(event);
-    expect(mockedObserver).toHaveBeenCalledTimes(2);
+    observable.publish(firstEvent);
+    expect(observer).toHaveBeenCalledWith(firstEvent, {
+      events: [firstEvent],
+      lastEvent: undefined,
+    });
+
+    const newEvent = f.datatype.uuid();
+    observable.dispatch(newEvent);
+    expect(observer).toHaveBeenCalledWith(newEvent, {
+      events: [firstEvent, newEvent],
+      lastEvent: firstEvent,
+    });
+
+    expect(observer).toHaveBeenCalledTimes(2);
     expect(window[SHARED][EVENTS][namespace]).toHaveLength(2);
   });
 
-  describe('Subscription options', () => {
-    it('should receive the latest event when subscribing after a published event', () => {
-      const event = 'Rasengan!';
-      observable.publish(event);
-      const subscriptionOptions: SubscriptionOptions = {
-        latest: true,
-      };
+  it('should unsubscribe an observer accordingly', () => {
+    const { observable, observer } = mockObservable();
 
-      const mockedObserver = jest.fn();
-      observable.subscribe(mockedObserver, subscriptionOptions);
-      observable.publish(event);
+    observable.subscribe(observer);
 
-      expect(mockedObserver).toHaveBeenCalledWith(event);
+    const event = f.datatype.uuid();
+
+    observable.unsubscribe(observer);
+
+    observable.publish(event);
+
+    expect(observer).not.toHaveBeenCalled();
+  });
+
+  it('should get every event and the last event accordingly', () => {
+    const { observable, observer } = mockObservable();
+
+    observable.subscribe(observer);
+
+    const events = [f.datatype.uuid(), f.datatype.uuid(), f.datatype.uuid()];
+
+    events.forEach((event) => {
+      observable.publish(event);
     });
 
-    it('should receive every event when subscribing', () => {
-      const events = [
-        'Kage bunshin 1',
-        'Kage bunshin 2',
-        'Kage bunshin 3',
-        'Kage bunshin 4',
-      ];
+    expect(observer).toHaveBeenCalledTimes(events.length);
 
-      events.forEach((event: string) => {
-        observable.publish(event);
-      });
-
-      const subscriptionOptions: SubscriptionOptions = {
-        every: true,
-      };
-
-      const mockedObserver = jest.fn();
-      observable.subscribe(mockedObserver, subscriptionOptions);
-
-      expect(mockedObserver).toHaveBeenCalled();
-      expect(mockedObserver).toHaveBeenCalledWith(events);
-    });
+    expect(observable.getEvents()).toStrictEqual(events);
+    expect(observable.getLastEvent()).toStrictEqual(events[events.length - 1]);
   });
 });
